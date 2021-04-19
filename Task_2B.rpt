@@ -1,0 +1,64 @@
+mysql> source test.sql
+--------------
+SET GLOBAL general_log = 'ON'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+SET GLOBAL log_output='TABLE'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> source test.sql
+--------------
+SET GLOBAL general_log = 'OFF'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+SELECT event_time, argument  
+FROM mysql.general_log
+WHERE argument
+LIKE '%CREATE%' 
+OR argument
+LIKE '%ALTER%' 
+OR argument
+LIKE '%DROP%'
+--------------
+
++----------------------------+---------------------------------------------------------------------------------------------------+
+| event_time                 | argument                                                                                          |
++----------------------------+---------------------------------------------------------------------------------------------------+
+| 2018-11-20 22:37:00.883582 | CREATE TABLE A3 ( Description VARCHAR(30) NOT NULL, CONSTRAINT A3_PKEY PRIMARY KEY (Description)) |
+| 2018-11-20 22:37:00.906387 | CREATE TABLE FUN ( Name VARCHAR(10) NOT NULL, CONSTRAINT A3_PKEY PRIMARY KEY (Name))              |
+| 2018-11-20 22:37:00.977670 | ALTER TABLE A3 MODIFY Description VARCHAR(35)                                                     |
+| 2018-11-20 22:37:01.049477 | DROP TABLE A3                                                                                     |
+| 2018-11-20 22:37:01.060569 | DROP TABLE FUN                                                                                    |
++----------------------------+---------------------------------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+--------------
+SELECT SUBSTRING(argument, 1, 6), count(*) 
+FROM mysql.general_log 
+WHERE argument 
+LIKE '%DELETE%' OR argument 
+LIKE '%UPDATE%' OR argument 
+LIKE '%INSERT%' OR argument 
+LIKE '%SELECT%' 
+GROUP BY SUBSTRING(argument, 1, 6)
+--------------
+
++---------------------------+----------+
+| SUBSTRING(argument, 1, 6) | count(*) |
++---------------------------+----------+
+| DELETE                    |       21 |
+| INSERT                    |        6 |
+| UPDATE                    |        3 |
+| SELECT                    |        2 |
++---------------------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> notee

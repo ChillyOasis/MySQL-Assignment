@@ -1,0 +1,118 @@
+mysql> source test.sql
+--------------
+CREATE USER bibi_1 IDENTIFIED BY 'bibi_1'
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+CREATE USER bibi_2 IDENTIFIED BY 'bibi_2'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+CREATE USER bibi_3 IDENTIFIED BY 'bibi_3'
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+GRANT ALTER, DROP, CREATE, SHOW VIEW, GRANT OPTION ON database.* TO bibi_1
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+GRANT CREATE, SHOW VIEW ON database.BOOK TO bibi_2
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+GRANT CREATE, SHOW VIEW ON database.AUTHOR TO bibi_2
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+ALTER USER bibi_3 WITH MAX_QUERIES_PER_HOUR 100
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+ALTER USER bibi_3 WITH MAX_UPDATES_PER_HOUR 10
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+ALTER USER bibi_2 PASSWORD EXPIRE
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+SHOW GRANTS FOR bibi_1
+--------------
+
++------------------------------------------------------------------------------------------------+
+| Grants for bibi_1@%                                                                      |
++------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `bibi_1`@`%`                                                       |
+| GRANT CREATE, DROP, ALTER, SHOW VIEW ON `database`.* TO `bibi_1`@`%` WITH GRANT OPTION |
++------------------------------------------------------------------------------------------------+
+2 rows in set (0.01 sec)
+
+--------------
+SHOW GRANTS FOR bibi_2
+--------------
+
++------------------------------------------------------------------------+
+| Grants for bibi_2@%                                              |
++------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `bibi_2`@`%`                               |
+| GRANT CREATE, SHOW VIEW ON `database`.`AUTHOR` TO `bibi_2`@`%` |
+| GRANT CREATE, SHOW VIEW ON `database`.`BOOK` TO `bibi_2`@`%`   |
++------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+
+--------------
+SHOW GRANTS FOR bibi_3
+--------------
+
++------------------------------------------+
+| Grants for bibi_3@%                |
++------------------------------------------+
+| GRANT USAGE ON *.* TO `bibi_3`@`%` |
++------------------------------------------+
+1 row in set (0.00 sec)
+
+--------------
+SELECT max_questions, max_updates
+FROM mysql.user
+WHERE user = 'bibi_3'
+--------------
+
++---------------+-------------+
+| max_questions | max_updates |
++---------------+-------------+
+|           100 |          10 |
++---------------+-------------+
+1 row in set (0.00 sec)
+
+--------------
+SELECT password_expired
+FROM mysql.user
+WHERE user = 'bibi_2'
+--------------
+
++------------------+
+| password_expired |
++------------------+
+| Y                |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> notee

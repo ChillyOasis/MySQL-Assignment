@@ -1,0 +1,69 @@
+mysql> source test.sql
+--------------
+SELECT *
+FROM BOOK
+WHERE BookID NOT IN (SELECT BookID FROM database_DOC)
+--------------
+
++--------+------------------+-------+
+| BookID | Title            | Price |
++--------+------------------+-------+
+| 20110  | Taipei Summer    | 20.88 |
+| 20111  | Bangkok Wealther | 20.88 |
+| 20112  | Najib influence  | 29.88 |
+| 20210  | 4G Singapore     | 25.88 |
+| 20211  | Rich and Poor    | 20.88 |
++--------+------------------+-------+
+5 rows in set (0.00 sec)
+
+--------------
+SELECT *
+FROM database_DOC
+WHERE BookID NOT IN (SELECT BookID FROM BOOK)
+--------------
+
++--------+-----------------+-------+
+| BookID | Title           | Price |
++--------+-----------------+-------+
+| 20101  | Malaysia Travel | 29.99 |
+| 20104  | Travel to USA   | 19.88 |
+| 20207  | Advance C++     | 50.00 |
++--------+-----------------+-------+
+3 rows in set (0.00 sec)
+
+--------------
+SELECT *
+FROM BOOK LEFT OUTER JOIN database_DOC
+ON BOOK.BookID = database_DOC.BookID
+--------------
+
++--------+----------------------+-------+--------+----------------------+-------+
+| BookID | Title                | Price | BookID | Title                | Price |
++--------+----------------------+-------+--------+----------------------+-------+
+| 20099  | Taipei 101           | 20.99 | 20099  | Taipei 101           | 20.99 |
+| 20100  | Bangkok 101          | 20.99 | 20100  | Bangkok 101          | 20.99 |
+| 20102  | Indonesia Travel     | 25.99 | 20102  | Indonesia Travel     | 25.99 |
+| 20103  | Vietnam Travel       | 20.99 | 20103  | Vietnam Travel       | 20.99 |
+| 20105  | Travel to Europe     | 25.88 | 20105  | Travel to Europe     | 25.88 |
+| 20106  | Travel to China      | 22.88 | 20106  | Travel to China      | 22.88 |
+| 20107  | Travel to Singapore  | 20.88 | 20107  | Travel to Singapore  | 20.88 |
+| 20108  | Myanmar Travel       | 21.88 | 20108  | Travel to Myanmar    | 21.88 |
+| 20109  | Travel to Japan      | 20.88 | 20109  | Travel to Japan      | 20.88 |
+| 20110  | Taipei Summer        | 20.88 | NULL   | NULL                 |  NULL |
+| 20111  | Bangkok Wealther     | 20.88 | NULL   | NULL                 |  NULL |
+| 20112  | Najib influence      | 29.88 | NULL   | NULL                 |  NULL |
+| 20200  | Java for Beginner    | 30.00 | 20200  | Java for Beginner    | 30.00 |
+| 20201  | UML Bible            | 60.00 | 20201  | UML Bible            | 59.00 |
+| 20202  | SQL Make Simple      | 40.00 | 20202  | SQL Make Simple      | 35.00 |
+| 20203  | MySQL Easy           | 45.00 | 20203  | MySQL Easy           | 45.00 |
+| 20204  | Microsoft SQL Server | 59.00 | 20204  | Microsoft SQL Server | 59.00 |
+| 20205  | Database Fundamental | 35.00 | 20205  | Database Fundamental | 35.00 |
+| 20206  | ASP.NET Introduction | 30.00 | 20206  | ASP.NET Introduction | 30.00 |
+| 20208  | Network Security     | 50.00 | 20208  | Network Security     | 50.00 |
+| 20209  | IOT and Big Data     | 30.00 | 20209  | IOT and Big Data     | 30.00 |
+| 20210  | 4G Singapore         | 25.88 | NULL   | NULL                 |  NULL |
+| 20211  | Rich and Poor        | 20.88 | NULL   | NULL                 |  NULL |
++--------+----------------------+-------+--------+----------------------+-------+
+23 rows in set (0.00 sec)
+
+mysql> notee

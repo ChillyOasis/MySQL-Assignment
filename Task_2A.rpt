@@ -1,0 +1,22 @@
+mysql> source test.sql
+--------------
+SELECT CONCAT('A purchase with the purchase ID of', PURCHASE.PurchaseID, 'is  an  online  purchase  of  type', ONLINEPURCHASE.OnlineType, 'and also a walkin purchase of location', WALKINPURCHASE.ShopLocation) AS 'A purchase which is an online purchase should NOT be a walk-in purchase'
+FROM PURCHASE
+INNER JOIN ONLINEPURCHASE 
+ON PURCHASE.PurchaseID = ONLINEPURCHASE.PurchaseID
+INNER JOIN WALKINPURCHASE 
+ON ONLINEPURCHASE.PurchaseID = WALKINPURCHASE.PurchaseID
+--------------
+
++--------------------------------------------------------------------------------------------------------------------------+
+| A purchase which is an online purchase should NOT be a walk-in purchase                                                  |
++--------------------------------------------------------------------------------------------------------------------------+
+| A purchase with the purchase ID of50010is  an  online  purchase  of  type1and also a walkin purchase of locationJurong   |
+| A purchase with the purchase ID of50011is  an  online  purchase  of  type1and also a walkin purchase of locationClementi |
+| A purchase with the purchase ID of50017is  an  online  purchase  of  type2and also a walkin purchase of locationClementi |
+| A purchase with the purchase ID of50018is  an  online  purchase  of  type1and also a walkin purchase of locationJurong   |
+| A purchase with the purchase ID of50019is  an  online  purchase  of  type2and also a walkin purchase of locationClementi |
++--------------------------------------------------------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> notee
